@@ -134,31 +134,36 @@ def index():
 def image():
     print("GET /image")
     image_html = """
-            # <!DOCTYPE html>
-            # <html>
-            # <head>
-            #     <title>Upload Image</title>
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="utf-8">
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+                <title>Upload Image</title>
                 
-            #     <style>
-            #     fieldset { margin: 0; }  
-            #     legend { font-size: 1.5em; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; }
-            #     input { margin: 10px; }
-            #     button { margin: 10px; }
-            #     li { font-size: 1em; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 10px; }
-            #     </style>
+                <style>
+                fieldset { margin: 0; }  
+                legend { font-size: 1.5em; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; }
+                input { margin: 10px; }
+                button { margin: 10px; }
+                li { font-size: 1em; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 10px; }
+                </style>
                 
-            # </head>
-            # <body>
-            #     <fieldset>
-            #         <form method="POST" enctype="multipart/form-data" action="/upload">
-            #         <legend>Upload Image</legend>
-            #         <input type="file" id="file" name="form_file" accept="image/jpeg"/>
-            #         <button>Upload</button>
-            #         </form>
-            #     </fieldset>
-            #     <br />
-            #     <div align="right"><button onClick='document.location.href="https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://34.172.81.167:8080/"'>Log Out</button></div>
-            test
+            </head>
+            <body>
+                <fieldset>
+                    <form method="POST" enctype="multipart/form-data" action="/upload">
+                    <legend>Upload Image</legend>
+                    <input type="file" id="file" name="form_file" accept="image/jpeg"/>
+                    <button>Upload</button>
+                    </form>
+                </fieldset>
+                <br />
+                <div align="right"><button onClick='document.location.href="https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://34.172.81.167:8080/"'>Log Out</button></div>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+            </body>
+            </html>
+            
             """
             
     # for file in list_of_files():
