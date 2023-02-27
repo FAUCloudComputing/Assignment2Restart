@@ -22,6 +22,7 @@ from utils.logging import logger
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def index():
     print("GET /")
@@ -126,11 +127,11 @@ def index():
   </body>
 </html>
             """
-            
-    
+
     return index_html
 
-@app.route('/image') 
+
+@app.route('/image')
 def image():
     print("GET /image")
     image_html = """
@@ -165,23 +166,25 @@ def image():
             </html>
             
             """
-            
+
     # for file in list_of_files():
     #     image_html += "<li><a href=\"/files/" + file + "\">" + file + "</a></li>"
-    
+
     return image_html
+
 
 @app.route('/upload', methods=['POST'])
 def upload():
     try:
-        
+
         print("POST /upload")
-        file = request.files['form_file'] 
+        file = request.files['form_file']
         file.save(os.path.join("./files", file.filename))
-        
+
     except:
         traceback.print_exc()
     return redirect('/')
+
 
 @app.route('/files')
 def list_of_files():
@@ -192,14 +195,11 @@ def list_of_files():
             files.remove(file)
     return files
 
+
 @app.route('/files/<filename>')
 def get_file(filename):
     print("GET /files/+filename")
     return 'Get File ' + filename
-
-
- 
-
 
 
 # @app.route("/")
