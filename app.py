@@ -161,8 +161,8 @@ def image():
             test
             """
             
-    for file in list_of_files():
-        image_html += "<li><a href=\"/files/" + file + "\">" + file + "</a></li>"
+    # for file in list_of_files():
+    #     image_html += "<li><a href=\"/files/" + file + "\">" + file + "</a></li>"
     
     return image_html
 
