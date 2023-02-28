@@ -109,7 +109,7 @@ def index():
             // Whether the display name should be displayed in the Sign Up page.
             requireDisplayName: true
           },
-          firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID
+          // firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID // THIS IS THE ANONYMOUS LOGIN
         ],
         // Set to true if you only have a single federated provider like
         // firebase.auth.GoogleAuthProvider.PROVIDER_ID and you would like to
