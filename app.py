@@ -163,7 +163,7 @@ def image():
                     </form>
                 </fieldset>
                 <br />
-                <div align="right"><button onClick='firebase.auth().signout();document.location.href="https://assignment2restart-pexpqiuvaa-uc.a.run.app"'>Log Out</button></div>
+                <div align="right"><button onClick='document.location.href="https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://assignment2restart-pexpqiuvaa-uc.a.run.app"'>Log Out</button></div>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
             </body>
             </html>
@@ -182,7 +182,7 @@ def upload():
         print("POST /upload")
 
         file = request.files['form_file']
-        # user = request.form['user']
+        # user = request.form['user'] 
 
         print("got image")
         print(file)
