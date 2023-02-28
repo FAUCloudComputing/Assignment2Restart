@@ -9,32 +9,35 @@ storage_client = storage.Client()
 bucket_name = "main-bucket-for-my-first-project"
 
 
-def list_db_entries():
-    query = datastore_client.query(kind="images")
+def list_db_entries(user_id):
+    query = datastore_client.query(kind='images')
+    query.add_filter('user_id', '=', user_id)
 
-    images = []
-    for image in query.fetch():
-        images.append(image)
-
+    images = list(query.fetch())
     return images
 
 
-def add_db_entry(image_name, image_size):
+def add_db_entry(user_id, image_name, image_size):
     size = len(image_name)
 
     entity = datastore.Entity(key=datastore_client.key("images"))
     entity.update({
         'Name': image_name,
-        # 'Owner': user,
+        'Owner': user_id,
         'Size': image_size
     })
 
     datastore_client.put(entity)
 
 
-def upload_file(blob_name, file):
+def upload_file(user_id, blob_name, file):
     bucket = storage_client.bucket(bucket_name)
-    blob = bucket.blob(blob_name)
+    blob = bucket.blob(f"{user_id}/{blob_name}")
+
+    if not bucket.blob(f"{user_id}").exists():
+        sub_blob = bucket.blob(f"{user_id}")
+        sub_blob.create_resumable_upload_session()
+
     file.seek(0)
 
     print("made bucket and blob")

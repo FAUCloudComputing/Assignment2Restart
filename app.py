@@ -18,12 +18,13 @@ import sys
 import traceback
 from types import FrameType
 
-from flask import Flask, redirect, request, jsonify
+from flask import Flask, redirect, request, jsonify, session
 
 import storage
 from utils.logging import logger
 
 app = Flask(__name__)
+app.secret_key = '123'
 
 
 @app.route('/')
@@ -58,14 +59,26 @@ def index():
         callbacks: {
           signInSuccessWithAuthResult: function(authResult, redirectUrl) {
             var user = authResult.user;
+            var userId = user.uid;  // Get the user ID from the user object
             var credential = authResult.credential;
             var isNewUser = authResult.additionalUserInfo.isNewUser;
             var providerId = authResult.additionalUserInfo.providerId;
             var operationType = authResult.operationType;
-            // Do something with the returned AuthResult.
-            // Return type determines whether we continue the redirect
-            // automatically or whether we leave that to developer to handle.
-            return true;
+        
+            // Store the user ID in the Flask session object
+            fetch('/store_user_id', {
+              method: 'POST',
+              body: JSON.stringify({'user_id': userId}),
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            }).then(function(response) {
+              // Redirect to the image upload page
+              window.location.assign('/image');
+            });
+        
+            // Return false to prevent automatic redirect
+            return false;
           },
           signInFailure: function(error) {
             // Some unrecoverable error occurred during sign-in.
@@ -139,7 +152,8 @@ def image():
     print("GET /image")
 
     # Call the list_of_files API to get a list of all image files
-    images = storage.list_db_entries()
+    user_id = session.get('user_id')
+    images = storage.list_db_entries(user_id)
 
     # Generate HTML for displaying the list of image files
     image_html = """
@@ -191,13 +205,21 @@ def image():
     return image_html
 
 
+@app.route('/store_user_id', methods=['POST'])
+def store_user_id():
+    user_id = request.json['user_id']
+    session['user_id'] = user_id
+    return jsonify({'status': 'success'})
+
+
 @app.route('/upload', methods=['POST'])
 def upload():
     try:
         print("POST /upload")
 
         file = request.files['form_file']
-        # user = request.form['user']
+        user_id = session.get('user_id')
+        print(user_id)
 
         print("got image")
         print(file)
@@ -206,12 +228,12 @@ def upload():
         file_size = len(file.read())
 
         # Add the entity to the datastore
-        storage.add_db_entry(file_name, file_size)
+        storage.add_db_entry(user_id, file_name, file_size)
         print("stores the image into the db")
 
         # Add the blob into the bucket
         blob_name = f"{file_name}.jpg"
-        storage.upload_file(blob_name, file)
+        storage.upload_file(user_id, blob_name, file)
         print("stores the image into storage")
 
     except:
@@ -223,7 +245,8 @@ def upload():
 @app.route('/files')
 def list_of_files():
     print("GET /files")
-    images = storage.list_db_entries()
+    user_id = request.args.get('user_id')
+    images = storage.list_db_entries(user_id)
     try:
         return [main_image['Name'] for main_image in images]
     except KeyError:
