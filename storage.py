@@ -1,7 +1,7 @@
 from google.cloud import datastore, storage
 import os
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = ".\\keyfile.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = ".\keyfile.json"
 
 datastore_client = datastore.Client()
 storage_client = storage.Client()
@@ -22,6 +22,7 @@ def add_db_entry(image_name, image_size):
     entity = datastore.Entity(key=datastore_client.key("images"))
     entity.update({
         'Name': image_name,
+        # 'Owner': user,
         'Size': image_size
     })
 
@@ -56,7 +57,6 @@ def upload_file(blob_name, file):
     print("uploaded")
 
     return
-
 
 # def download_file(blob_name, file):
 #     bucket = storage_client.bucket(bucket_name)

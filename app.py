@@ -12,13 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import signal
 import sys
-import os, traceback
-import storage
-
+import traceback
 from types import FrameType
+
 from flask import Flask, redirect, request
+
+import storage
 from utils.logging import logger
 
 app = Flask(__name__)
@@ -180,6 +182,7 @@ def upload():
         print("POST /upload")
 
         file = request.files['form_file']
+        # user = request.form['user']
 
         print("got image")
         print(file)
@@ -198,7 +201,8 @@ def upload():
 
     except:
         traceback.print_exc()
-    return {'status': 'success', 'message': 'File uploaded successfully'}
+
+    return redirect(request.referrer)
 
 
 @app.route('/files')
