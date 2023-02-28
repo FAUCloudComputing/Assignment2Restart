@@ -198,7 +198,7 @@ def upload():
 
     except:
         traceback.print_exc()
-    return redirect('/')
+    return {'status': 'success', 'message': 'File uploaded successfully'}
 
 
 @app.route('/files')
