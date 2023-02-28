@@ -151,8 +151,10 @@ def index():
 def image():
     print("GET /image")
 
-    # Call the list_of_files API to get a list of all image files
+    # Get the user_id from the session
     user_id = session.get('user_id')
+
+    # Call the list_db_entries API to get a list of all image files for this user
     images = storage.list_db_entries(user_id)
 
     # Generate HTML for displaying the list of image files
@@ -162,7 +164,7 @@ def image():
         <head>
             <meta charset="utf-8">
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-            <title>Upload Image</title>
+            <title>Image List</title>
 
             <style>
             fieldset { margin: 0; }  
@@ -187,6 +189,7 @@ def image():
                 <ul>
     """
 
+    print("List of images in image api:", images)
     # Add a link to each image file in the list
     for main_image in images:
         image_html += "<li><a href=\"/files/" + main_image['Name'] + "\" target=\"_blank\">" + main_image[
@@ -219,7 +222,6 @@ def upload():
 
         file = request.files['form_file']
         user_id = session.get('user_id')
-        print(user_id)
 
         print("got image")
         print(file)
@@ -242,15 +244,18 @@ def upload():
     return redirect(request.referrer)
 
 
-@app.route('/files')
-def list_of_files():
-    print("GET /files")
-    user_id = request.args.get('user_id')
-    images = storage.list_db_entries(user_id)
-    try:
-        return [main_image['Name'] for main_image in images]
-    except KeyError:
-        return []
+# @app.route('/files')
+# def list_of_files():
+#     print("GET /files")
+#     user_id = request.args.get('user_id')
+#     print(f"User ID: {user_id}")
+#     images = storage.list_db_entries(user_id)
+#     print("List of images in list of files api:", images)
+#     return jsonify(images)
+#     # try:
+#     #     return [main_image['Name'] for main_image in images]
+#     # except KeyError:
+#     #     return []
 
 
 @app.route('/files/<filename>')

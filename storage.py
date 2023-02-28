@@ -11,9 +11,14 @@ bucket_name = "main-bucket-for-my-first-project"
 
 def list_db_entries(user_id):
     query = datastore_client.query(kind='images')
-    query.add_filter('user_id', '=', user_id)
+    query.add_filter('Owner', '=', user_id)
 
-    images = list(query.fetch())
+    images = []
+    for image in query.fetch():
+        images.append(image)
+
+    print("List of images in storage file:", images)
+
     return images
 
 
