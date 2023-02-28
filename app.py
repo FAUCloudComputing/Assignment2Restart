@@ -197,7 +197,7 @@ def image():
     image_html += """
                 </ul>
             </div>
-            <div align="right"><button onClick='firebase.auth().signOut();window.location.href="/";'>Log Out</button></div>
+            <div align="right"><button onClick='firebase.auth().signOut();window.location.href="https://assignment2restart-pexpqiuvaa-uc.a.run.app/";'>Log Out</button></div>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
         </body>
         </html>
