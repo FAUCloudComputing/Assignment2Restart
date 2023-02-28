@@ -15,6 +15,7 @@
 import signal
 import sys
 import os, traceback
+import storage
 
 from types import FrameType
 from flask import Flask, redirect, request
@@ -176,10 +177,24 @@ def image():
 @app.route('/upload', methods=['POST'])
 def upload():
     try:
-
         print("POST /upload")
+
         file = request.files['form_file']
-        file.save(os.path.join("./files", file.filename))
+
+        print("got image")
+        print(file)
+
+        file_name = file.filename.split('.')[0]
+        file_size = len(file.read())
+
+        # Add the entity to the datastore
+        storage.add_db_entry(file_name, file_size)
+        print("stores the image into the db")
+
+        # Add the blob into the bucket
+        blob_name = f"{file_name}.jpg"
+        storage.upload_file(blob_name, file)
+        print("stores the image into storage")
 
     except:
         traceback.print_exc()
