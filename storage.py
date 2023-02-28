@@ -2,7 +2,7 @@ from google.cloud import datastore, storage
 import os
 
 # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = ".\\keyfile.json"
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "Assignment2Restart/keyfile.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = './keyfile.json'
 
 datastore_client = datastore.Client()
 storage_client = storage.Client()
@@ -13,8 +13,11 @@ bucket_name = "main-bucket-for-my-first-project"
 # def list_db_entries():
 #     query = datastore_client.query(kind="images")
 #
+#     images = []
 #     for image in query.fetch():
-#         print(image.items())
+#         images.append(image)
+#
+#     return images
 
 
 def add_db_entry(image_name, image_size):
