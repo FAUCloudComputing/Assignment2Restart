@@ -12,19 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
 import signal
 import sys
 import traceback
 from types import FrameType
 
-from flask import Flask, redirect, request, jsonify, session
+from flask import Flask, redirect, request, jsonify, session, send_file, Response
 
 import storage
 from utils.logging import logger
 
 app = Flask(__name__)
-app.secret_key = '123'
+app.secret_key = '47238947238439279382479'
 
 
 @app.route('/')
@@ -189,7 +188,6 @@ def image():
                 <ul>
     """
 
-    print("List of images in image api:", images)
     # Add a link to each image file in the list
     for main_image in images:
         image_html += "<li><a href=\"/files/" + main_image['Name'] + "\" target=\"_blank\">" + main_image[
@@ -210,8 +208,15 @@ def image():
 
 @app.route('/store_user_id', methods=['POST'])
 def store_user_id():
+    print("POST /store_user_id")
+
+    # Get the user_id from the request JSON data
     user_id = request.json['user_id']
+
+    # Store the user_id in the session
     session['user_id'] = user_id
+
+    # Return a JSON response with a status message
     return jsonify({'status': 'success'})
 
 
@@ -220,48 +225,41 @@ def upload():
     try:
         print("POST /upload")
 
+        # Get the file from the request
         file = request.files['form_file']
+
+        # Get the user_id from the session
         user_id = session.get('user_id')
 
-        print("got image")
-        print(file)
-
+        # Extract file name and size
         file_name = file.filename.split('.')[0]
         file_size = len(file.read())
 
-        # Add the entity to the datastore
+        # Store file metadata in the database
         storage.add_db_entry(user_id, file_name, file_size)
-        print("stores the image into the db")
 
-        # Add the blob into the bucket
+        # Upload file to storage
         blob_name = f"{file_name}.jpg"
         storage.upload_file(user_id, blob_name, file)
-        print("stores the image into storage")
 
     except:
+        # If an exception occurs, print the traceback
         traceback.print_exc()
 
+    # Redirect to the previous page
     return redirect(request.referrer)
-
-
-# @app.route('/files')
-# def list_of_files():
-#     print("GET /files")
-#     user_id = request.args.get('user_id')
-#     print(f"User ID: {user_id}")
-#     images = storage.list_db_entries(user_id)
-#     print("List of images in list of files api:", images)
-#     return jsonify(images)
-#     # try:
-#     #     return [main_image['Name'] for main_image in images]
-#     # except KeyError:
-#     #     return []
 
 
 @app.route('/files/<filename>')
 def get_file(filename):
-    print("GET /files/+filename")
-    return redirect(f"https://storage.googleapis.com/{storage.bucket_name}/{filename}")
+    # Get the user_id from the session
+    user_id = session.get('user_id')
+
+    # Download the file from storage
+    image_data = storage.download_file(user_id, f"{filename}.jpg")
+
+    # Return a response with the file data and MIME type
+    return Response(image_data, mimetype='image/jpeg')
 
 
 # @app.route("/")
