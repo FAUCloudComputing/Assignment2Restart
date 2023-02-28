@@ -18,7 +18,7 @@ import sys
 import traceback
 from types import FrameType
 
-from flask import Flask, redirect, request
+from flask import Flask, redirect, request, jsonify
 
 import storage
 from utils.logging import logger
@@ -137,41 +137,56 @@ def index():
 @app.route('/image')
 def image():
     print("GET /image")
-    image_html = """
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset="utf-8">
-                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-                <title>Upload Image</title>
-                
-                <style>
-                fieldset { margin: 0; }  
-                legend { font-size: 1.5em; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; }
-                input { margin: 10px; }
-                button { margin: 10px; }
-                li { font-size: 1em; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 10px; }
-                </style>
-                
-            </head>
-            <body>
-                <fieldset>
-                    <form method="POST" enctype="multipart/form-data" action="/upload">
-                    <legend>Upload Image</legend>
-                    <input type="file" id="file" name="form_file" accept="image/jpeg"/>
-                    <button>Upload</button>
-                    </form>
-                </fieldset>
-                <br />
-                <div align="right"><button onClick='document.location.href="https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://assignment2restart-pexpqiuvaa-uc.a.run.app"'>Log Out</button></div>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-            </body>
-            </html>
-            
-            """
 
-    # for file in list_of_files():
-    #     image_html += "<li><a href=\"/files/" + file + "\">" + file + "</a></li>"
+    # Call the list_of_files API to get a list of all image files
+    images = storage.list_db_entries()
+
+    # Generate HTML for displaying the list of image files
+    image_html = """
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+            <title>Upload Image</title>
+
+            <style>
+            fieldset { margin: 0; }  
+            legend { font-size: 1.5em; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; }
+            input { margin: 10px; }
+            button { margin: 10px; }
+            li { font-size: 1em; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 10px; }
+            </style>
+
+        </head>
+        <body>
+            <fieldset>
+                <form method="POST" enctype="multipart/form-data" action="/upload">
+                <legend>Upload Image</legend>
+                <input type="file" id="file" name="form_file" accept="image/jpeg"/>
+                <button>Upload</button>
+                </form>
+            </fieldset>
+            <br />
+            <div>
+                <h4>List of Image Files:</h4>
+                <ul>
+    """
+
+    # Add a link to each image file in the list
+    for main_image in images:
+        image_html += "<li><a href=\"/files/" + main_image['Name'] + "\" target=\"_blank\">" + main_image[
+            'Name'] + "</a></li>"
+
+    # Close the HTML tags
+    image_html += """
+                </ul>
+            </div>
+            <div align="right"><button onClick='document.location.href="https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=https://assignment2restart-pexpqiuvaa-uc.a.run.app"'>Log Out</button></div>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+        </body>
+        </html>
+    """
 
     return image_html
 
@@ -208,17 +223,17 @@ def upload():
 @app.route('/files')
 def list_of_files():
     print("GET /files")
-    files = os.listdir("./files")
-    for file in files:
-        if not file.endswith('.jpg'):
-            files.remove(file)
-    return files
+    images = storage.list_db_entries()
+    try:
+        return [main_image['Name'] for main_image in images]
+    except KeyError:
+        return []
 
 
 @app.route('/files/<filename>')
 def get_file(filename):
     print("GET /files/+filename")
-    return 'Get File ' + filename
+    return redirect(f"https://storage.googleapis.com/{storage.bucket_name}/{filename}")
 
 
 # @app.route("/")
