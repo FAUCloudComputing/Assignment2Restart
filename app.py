@@ -132,7 +132,7 @@ def index():
       ui.start('#firebaseui-auth-container', uiConfig);
     </script>
   </head>
-  <body style="background-color:blue">
+  <body style="background-color:green">
     <!-- The surrounding HTML is left untouched by FirebaseUI.
          Your app may use that space for branding, controls and other customizations.-->
     <h1><div align="center"><br />Cloud Computing<br />Image Upload App<br /><br /> </div></h1>
@@ -174,7 +174,7 @@ def image():
             </style>
 
         </head>
-        <body style="background-color:blue">
+        <body style="background-color:green">
             <fieldset>
                 <form method="POST" enctype="multipart/form-data" action="/upload">
                 <legend>Upload Image</legend>
