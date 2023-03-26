@@ -4,7 +4,7 @@ import os
 
 
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = service_account.Credentials.from_service_account_file("service-account.json")
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = service_account.Credentials.from_service_account_file("$HOME/.config/gcloud/application_default_credentials.json")
 
 datastore_client = datastore.Client()
 storage_client = storage.Client()
