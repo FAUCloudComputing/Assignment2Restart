@@ -4,7 +4,7 @@ import os
 
 
 # Set the environment variable for the service account key
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = service_account.Credentials.from_service_account_file("application_default_credentials.json")
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = service_account.Credentials.from_service_account_info("cicd-service-account@vernal-landing-376714.iam.gserviceaccount.com")
 
 datastore_client = datastore.Client()
 storage_client = storage.Client()
