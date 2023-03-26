@@ -3,8 +3,8 @@ from google.oauth2 import service_account
 import os
 
 
-
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = service_account.Credentials.from_service_account_file("$HOME/.config/gcloud/application_default_credentials.json")
+# Set the environment variable for the service account key
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = service_account.Credentials.from_service_account_file("application_default_credentials.json")
 
 datastore_client = datastore.Client()
 storage_client = storage.Client()
