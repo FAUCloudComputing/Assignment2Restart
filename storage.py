@@ -21,7 +21,7 @@ payload = response.payload.data.decode("UTF-8")
 
 
 # Set the environment variable for the service account key
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = payload
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "keyfile.json"
 
 datastore_client = datastore.Client()
 storage_client = storage.Client()
