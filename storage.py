@@ -1,10 +1,27 @@
-from google.cloud import datastore, storage
+from google.cloud import datastore, storage, secretmanager
 from google.oauth2 import service_account
 import os
 
+# Create the Secret Manager client
+client = secretmanager.SecretManagerServiceClient()
+
+# Build the resource name of the secret version
+name = f"projects/3784716704/secrets/keyfile_json"
+
+# Access the secret version
+response = client.access_secret_version(request={"name": name})
+
+# Verify payload checksum
+crc32c = google_crc32c.Checksum()
+crc32c.update(response.payload.data)
+if response.payload.data_crc32c != int(crc32c.hexdigest(), 16):
+    print("Data corruption detected.")
+    # return response
+payload = response.payload.data.decode("UTF-8")
+
 
 # Set the environment variable for the service account key
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = service_account.Credentials.from_service_account_file("projects/3784716704/secrets/keyfile_json")
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = payload
 
 datastore_client = datastore.Client()
 storage_client = storage.Client()
