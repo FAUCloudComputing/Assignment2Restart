@@ -25,7 +25,7 @@ from utils.logging import logger
 app = Flask(__name__)
 app.secret_key = '47238947238439279382479'
 
-
+ 
 @app.route('/')
 def index():
     print("GET /")
