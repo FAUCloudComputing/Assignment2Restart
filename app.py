@@ -147,7 +147,7 @@ def index():
   <body>
     <!-- The surrounding HTML is left untouched by FirebaseUI.
          Your app may use that space for branding, controls and other customizations.-->
-    <h1><div align="center"><br />Cloud Computing<br />Image Upload App XX<br /><br /> </div></h1>
+    <h1><div align="center"><br />Cloud Computing<br />Image Upload App X<br /><br /> </div></h1>
             """
     message = "Secret ID: "
     message += access_secret_version("<SECRET_VERSION_ID>")
