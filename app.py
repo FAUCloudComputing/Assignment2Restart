@@ -25,7 +25,19 @@ from utils.logging import logger
 app = Flask(__name__)
 # app.secret_key = '47238947238439279382479'
 
- 
+def access_secret_version(secret_version_id):
+    """Return the value of a secret's version"""
+    from google.cloud import secretmanager
+
+    # Create the Secret Manager client.
+    client = secretmanager.SecretManagerServiceClient()
+
+    # Access the secret version.
+    response = client.access_secret_version(name=secret_version_id)
+
+    # Return the decoded payload.
+    return response.payload.data.decode('UTF-8')
+
 @app.route('/')
 def index():
     print("GET /")
@@ -139,9 +151,13 @@ def index():
     <div id="firebaseui-auth-container"></div>
     <div id="loader">Loading...</div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-  </body>
-</html>
             """
+    message = access_secret_version("<SECRET_VERSION_ID>")
+    index_html += index_html + message
+    index_html += """
+    </body>
+    </html>
+    """
 
     return index_html
 
