@@ -149,7 +149,7 @@ def index():
          Your app may use that space for branding, controls and other customizations.-->
     <h1><div align="center"><br />Cloud Computing<br />Image Upload App X<br /><br /> </div></h1>
             """
-    message = "Secret ID: "
+    message = "Secret ID:  "
     message += access_secret_version("<SECRET_VERSION_ID>")
     index_html += "<div>" + message + "</div>"
     index_html += """
