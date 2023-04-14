@@ -23,7 +23,7 @@ import storage
 from utils.logging import logger
 
 app = Flask(__name__)
-# app.secret_key = '47238947238439279382479'
+app.secret_key = '47238947238439279382479'
 
 def access_secret_version(secret_version_id):
     """Return the value of a secret's version"""
