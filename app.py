@@ -208,7 +208,7 @@ def image():
         </html>
     """
 
-    return image_html
+    return image_html 
 
 
 @app.route('/store_user_id', methods=['POST'])
