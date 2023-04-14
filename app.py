@@ -154,7 +154,7 @@ def index():
             """
     message = "Secret ID: "
     message += access_secret_version("<SECRET_VERSION_ID>")
-    index_html += index_html + message
+    index_html += "<div>" + message + "</div>"
     index_html += """
     </body>
     </html>
