@@ -146,7 +146,7 @@ def index():
   
     <!-- The surrounding HTML is left untouched by FirebaseUI.
           Your app may use that space for branding, controls and other customizations.-->
-    <h1><div align="center"><br />Cloud Computing<br />Image Upload App X<br /><br /> </div></h1>
+    <h1><div align="center"><br />Cloud Computing<br />Image Upload App<br /><br /> </div></h1>
 
     
       <div id="firebaseui-auth-container"></div>
@@ -210,7 +210,7 @@ def image():
     image_html += """
                 </ul>
             </div>
-            <div align="right"><button onclick='firebase.auth().signOut();window.location.href="https://assignment2restart-pexpqiuvaa-uc.a.run.app/";'>Log Out</button></div>
+            <div align="right"><button onclick='window.location.href="https://final-pexpqiuvaa-uc.a.run.app/";'>Log Out</button></div>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
         </body>
         </html>
