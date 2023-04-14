@@ -152,7 +152,8 @@ def index():
     <div id="loader">Loading...</div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
             """
-    message = access_secret_version("<SECRET_VERSION_ID>")
+    message = "Secret ID: "
+    message += access_secret_version("<SECRET_VERSION_ID>")
     index_html += index_html + message
     index_html += """
     </body>
