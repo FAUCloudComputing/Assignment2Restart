@@ -53,15 +53,16 @@ def index():
 
     <script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.13.0/firebase-auth-compat.js"></script>
+    <script src="/config.js"></script>
+    <script src="/firebase.js"></script>
     
-    
-    <script>
-    var config = {
-        apiKey: "AIzaSyAlTjagupmUrQ9veESjRJHhlgm9J4L4CxQ",
-        authDomain: "vernal-landing-376714.firebaseapp.com",
-    };
-    firebase.initializeApp(config);
-    </script>
+    # <script>
+    # var config = {
+    #     apiKey: "AIzaSyAlTjagupmUrQ9veESjRJHhlgm9J4L4CxQ",
+    #     authDomain: "vernal-landing-376714.firebaseapp.com",
+    # };
+    # firebase.initializeApp(config);
+    # </script>
     
     
     <script type="text/javascript">
