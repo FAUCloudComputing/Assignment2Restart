@@ -16,6 +16,7 @@
 from functools import wraps
 from typing import Callable, Dict, TypeVar
 
+
 import firebase_admin
 from firebase_admin import auth  # noqa: F401
 from flask import request, Response

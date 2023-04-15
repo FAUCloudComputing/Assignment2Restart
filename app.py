@@ -20,6 +20,8 @@ from types import FrameType
 
 from flask import Flask, redirect, request, jsonify, session, send_file, Response
 
+from middleware import jwt_authenticated, logger
+
 import storage
 from utils.logging import logger
 
