@@ -147,48 +147,6 @@ def create_tables() -> None:
         ))
 
 
-def get_index_context() -> Dict[str, Any]:
-    votes = []
-    with db.connect() as conn:
-        # Execute the query and fetch all results
-        recent_votes = conn.execute(sqlalchemy.text(
-            "SELECT candidate, time_cast FROM pet_votes "
-            "ORDER BY time_cast DESC LIMIT 5"
-        )).fetchall()
-        # Convert the results into a list of dicts representing votes
-        for row in recent_votes:
-            votes.append(
-                {
-                    "candidate": row[0],
-                    "time_cast": row[1],
-                }
-            )
-        stmt = sqlalchemy.text(
-            "SELECT COUNT(vote_id) FROM pet_votes WHERE candidate=:candidate"
-        )
-        # Count number of votes for cats
-        cats_count = conn.execute(stmt, parameters={"candidate": "CATS"}).scalar()
-        # Count number of votes for dogs
-        dogs_count = conn.execute(stmt, parameters={"candidate": "DOGS"}).scalar()
-    return {
-        "dogs_count": dogs_count,
-        "recent_votes": votes,
-        "cats_count": cats_count,
-    }
-
-
-def save_vote(team: str, uid: str, time_cast: datetime.datetime) -> None:
-    # Preparing a statement before hand can help protect against injections.
-    stmt = sqlalchemy.text(
-        "INSERT INTO pet_votes (time_cast, candidate, uid)"
-        " VALUES (:time_cast, :candidate, :uid)"
-    )
-
-    # Using a with statement ensures that the connection is always released
-    # back into the pool at the end of statement (even if an error occurs)
-    with db.begin() as conn:
-        conn.execute(stmt, parameters={"time_cast": time_cast, "candidate": team, "uid": uid})
-    logger.info("Vote for %s saved.", team)
 
 
 def shutdown() -> None:
