@@ -189,6 +189,14 @@ def image():
             li { font-size: 1em; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 10px; }
             </style>
 
+            <!-- Firebase App (the core Firebase SDK) -->
+            <script src="https://www.gstatic.com/firebasejs/7.18/firebase-app.js"></script>
+            <!-- Add Firebase Auth service-->
+            <script src="https://www.gstatic.com/firebasejs/7.18/firebase-auth.js"></script>
+            
+            <script src="/static/config.js"></script>
+            <script src="/static/firebase.js"></script>
+
         </head>
         <body>
             <fieldset>
