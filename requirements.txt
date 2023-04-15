@@ -10,3 +10,6 @@ google-cloud-datastore==2.13.2
 google-cloud-storage==2.7.0
 
 google-cloud-secret-manager==2.1.0
+
+firebase-admin==5.0.0
+firebae_admin==5.0.0
