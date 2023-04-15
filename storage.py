@@ -23,7 +23,7 @@ def list_db_entries(user_id):
     return images
 
 
-def add_db_entry(user_id, image_name, image_size):
+def add_db_entry(user_id, image_name, image_size, image_date, image_time):
     # Calculate the length of the image name
     size = len(image_name)
 
@@ -32,7 +32,9 @@ def add_db_entry(user_id, image_name, image_size):
     entity.update({
         'Name': image_name,
         'Owner': user_id,
-        'Size': image_size
+        'Size': image_size,
+        'Date': image_date,
+        'Time': image_time
     })
 
     # Store the entity in the Datastore

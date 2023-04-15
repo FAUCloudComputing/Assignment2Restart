@@ -11,10 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+import mimetypes
 import signal
 import sys
 import traceback
+import datetime
 from types import FrameType
 
 from flask import Flask, redirect, request, jsonify, session, send_file, Response
@@ -202,10 +203,36 @@ def image():
                 <ul>
     """
 
-    # Add a link to each image file in the list
+    # Displays the names of the files and their metadata
     for main_image in images:
-        image_html += "<li><a href=\"/files/" + main_image['Name'] + "\" target=\"_blank\">" + main_image[
-            'Name'] + "</a></li>"
+        file_name = main_image.get('Name', 'N/A')
+        file_date = main_image.get('Date', 'N/A')
+        file_time = main_image.get('Time', 'N/A')
+        file_size = main_image.get('Size', 'N/A')
+
+        # check if metadata is not equal to 'N/A'
+        if file_name != 'N/A':
+            image_html += f"<li><a href=\"/files/{file_name}\" target=\"_blank\">{file_name}</a><br>"
+
+        # add file size if it is not equal to 'N/A'
+        if file_size != 'N/A':
+            image_html += f"Size: {file_size} bytes<br>"
+
+        # add date if it is not equal to 'N/A'
+        if file_date != 'N/A':
+            image_html += f"Date: {file_date}<br>"
+
+            # add time if it is not equal to 'N/A'
+        if file_time != 'N/A':
+            # convert to datetime object
+            dt = datetime.datetime.strptime(file_time, '%H:%M')
+
+            # convert to 12-hour format with AM/PM
+            formatted_time = dt.strftime('%I:%M %p')
+
+            image_html += f"Time: {formatted_time}"
+
+        image_html += "</li>"
 
     # Close the HTML tags
     image_html += """
@@ -248,9 +275,11 @@ def upload():
         # Extract file name and size
         file_name = file.filename.split('.')[0]
         file_size = len(file.read())
+        file_date = datetime.datetime.now().strftime("%m/%d/%Y")
+        file_time = datetime.datetime.now().strftime("%H:%M")
 
         # Store file metadata in the database
-        storage.add_db_entry(user_id, file_name, file_size)
+        storage.add_db_entry(user_id, file_name, file_size, file_date, file_time)
 
         # Upload file to storage
         blob_name = f"{file_name}.jpg"
