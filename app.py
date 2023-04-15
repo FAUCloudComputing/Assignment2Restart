@@ -55,21 +55,15 @@ def index():
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first-->
+  
+  <!-- Firebase App (the core Firebase SDK) -->
   <script src="https://www.gstatic.com/firebasejs/7.18/firebase-app.js"></script>
   <!-- Add Firebase Auth service-->
   <script src="https://www.gstatic.com/firebasejs/7.18/firebase-auth.js"></script>
-  <script src="/config.js"></script>
-  <script src="/firebase.js"></script>
+  <script src="/static/config.js"></script>
+  <script src="/static/firebase.js"></script>
     
-    # <script>
-    # var config = {
-    #     apiKey: "AIzaSyAlTjagupmUrQ9veESjRJHhlgm9J4L4CxQ",
-    #     authDomain: "vernal-landing-376714.firebaseapp.com",
-    # };
-    # firebase.initializeApp(config);
-    # </script>
-    
+
     
     <script type="text/javascript">
       // FirebaseUI config.
@@ -155,7 +149,6 @@ def index():
           Your app may use that space for branding, controls and other customizations.-->
     <h1><div align="center"><br />Cloud Computing<br />Image Upload App<br /><br /> </div></h1>
 
-    
       <div id="firebaseui-auth-container"></div>
     <div id="loader">Loading...</div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
