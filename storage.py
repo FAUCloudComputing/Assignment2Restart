@@ -10,7 +10,8 @@ from middleware import logger
 
 #app_secret = json.dumps(dict(os.environ.get("APP_CREDENTIALS_SECRET"))) 
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials.get_app_cred_config() #json.loads(app_secret) #'./keyfile.json' #app_secret
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = './keyfile.json'
+#credentials.get_app_cred_config() #json.loads(app_secret) #'./keyfile.json' #app_secret
 
 datastore_client = datastore.Client()
 storage_client = storage.Client()
