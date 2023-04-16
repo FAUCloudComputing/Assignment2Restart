@@ -1,17 +1,46 @@
 from google.cloud import datastore, storage
 import json
-import credentials
 import os
-from typing import Dict
 
+from typing import Dict
+from google.oauth2.credentials import Credentials
 from middleware import logger
 
-#app_secret = os.environ.get("APP_CREDENTIALS_SECRET")
 
-#app_secret = json.dumps(dict(os.environ.get("APP_CREDENTIALS_SECRET"))) 
+# Read the JSON string from the environment variable
+secret_json = os.environ.get('APP_CREDENTIALS_SECRET')
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = './keyfile.json'
-#credentials.get_app_cred_config() #json.loads(app_secret) #'./keyfile.json' #app_secret
+# Parse the JSON string into a dictionary
+secret_data = json.loads(secret_json)
+type = secret_data["type"],
+project_id = secret_data["project_id"],
+private_key_id = secret_data["private_key_id"],
+private_key = ["private_key"],
+client_email = secret_data["client_email"],
+client_id = secret_data["client_id"],
+auth_uri = secret_data["auth_uri"],
+token_uri = secret_data["token_uri"],
+auth_provider_x509_cert_url = secret_data["auth_provider_x509_cert_url"],
+client_x509_cert_url = secret_data["client_x509_cert_url"],
+
+# Create a Credentials object using the extracted information
+credentials = Credentials.from_authorized_user_info(info={
+    "type": type,
+    "project_id": project_id,
+    "private_key_id": private_key_id,
+    "private_key": private_key,
+    "client_id": client_id, 
+    "client_email": client_email,
+    "auth_uri": auth_uri,
+    "token_uri": token_uri,
+    "auth_provider_x509_cert_url": auth_provider_x509_cert_url,
+    "client_x509_cert_url": client_x509_cert_url,
+})
+
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = ''
+credentials.to_json()
+
 
 datastore_client = datastore.Client()
 storage_client = storage.Client()
