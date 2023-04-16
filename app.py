@@ -221,16 +221,7 @@ def image():
 
         # check if metadata is not equal to 'N/A'
         if file_name != 'N/A':
-            image_html += """
-              <li>
-                <form action="/delete" method="post">
-                  <input type="hidden" name="form_file2" value="{file_name}">
-                  <a href="/files/{file_name}" target="_blank">{file_name}</a>
-                  <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                </form>
-                <br>
-            """
-
+            image_html += f"<li><form action=\"/delete\" method=\"post\"><input type=\"hidden\" name=\"form_file2\" value=\"{file_name}\"><a href=\"/files/{file_name}\" target=\"_blank\">{file_name}</a><button type=\"submit\" class=\"btn btn-danger btn-sm\">Delete</button></form><br>"
         # add file size if it is not equal to 'N/A'
         if file_size != 'N/A':
             image_html += f"Size: {file_size} bytes<br>"
