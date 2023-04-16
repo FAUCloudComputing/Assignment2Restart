@@ -221,7 +221,13 @@ def image():
 
         # check if metadata is not equal to 'N/A'
         if file_name != 'N/A':
-            image_html += f"<li><a href=\"/files/{file_name}\" target=\"_blank\">{file_name}</a><br>"
+            image_html += """<li>
+              <a href=\"/files/{file_name}\" target=\"_blank\">{file_name}</a>
+              <form action="/delete" method="post">
+                <input type="hidden" name="image_id" value="{{ image.id }}">
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+            <br>"""
 
         # add file size if it is not equal to 'N/A'
         if file_size != 'N/A':
@@ -313,6 +319,15 @@ def get_file(filename):
     # Return a response with the file data and MIME type
     return Response(image_data, mimetype='image/jpeg')
 
+
+@app.route('/delete', methods=['POST'])
+def delete_image():
+    image_id = request.form.get('image_id')
+    # Use the image_id to delete the image from storage or database
+    # Your deletion logic here
+
+    # Redirect to the image gallery page after deletion
+    return redirect('/image')
 
 # @app.route("/")
 # def hello() -> str:
