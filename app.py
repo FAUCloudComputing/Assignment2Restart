@@ -202,8 +202,8 @@ def image():
             <fieldset>
                 <form method="POST" enctype="multipart/form-data" action="/upload">
                 <legend>Upload Image</legend>
-                <input type="file" id="file" name="form_file" accept="image/jpeg"/>
-                <button>Upload</button>
+                <input type="file" class="btn btn-primary" id="file" name="form_file" accept="image/jpeg"/>
+                <button class="btn btn-primary">Upload</button>
                 </form>
             </fieldset>
             <br />
@@ -317,22 +317,20 @@ def get_file(filename):
 @app.route('/delete', methods=['POST'])
 def delete_image(filename):
   # Get the user_id from the session
-    user_id = session.get('user_id')
-    image_id = request.form.get('image_id')
-    # Use the image_id to delete the image from storage or database
-    # Your deletion logic here
-    # Call the delete_file function to delete the file
-    result, status_code = storage.delete_file(user_id, f"{filename}.jpg")
+  user_id = session.get('user_id')
+  # set the blob name to the filename with the extension
+  blob_name = f"{filename}.jpg"  
+  # Call the delete_file function to delete the file
+  status_code = storage.delete_file(user_id, blob_name)
 
-    # Check the result and status code returned by the function
-    if status_code == 200:
-    #  return {'message': 'File deleted successfully'}, 200
-      # Redirect to the image gallery page after deletion
-      return redirect('/image')
-    elif status_code == 404:
-      return {'message': 'File not found'}, 404
-    else:
-      return {'error': 'An error occurred while deleting the file'}, 500
+  # Check the result and status code returned by the function
+  if status_code == 200:
+    # Redirect to the image gallery page after deletion
+    return redirect('/image')
+  elif status_code == 404:
+    return {'message': 'File not found'}, 404
+  else:
+    return {'error': 'An error occurred while deleting the file'}, 500
     
 
 # @app.route("/")
