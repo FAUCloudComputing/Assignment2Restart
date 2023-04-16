@@ -202,8 +202,8 @@ def image():
             <fieldset>
                 <form method="POST" enctype="multipart/form-data" action="/upload">
                 <legend>Upload Image</legend>
-                <input type="file" class="btn btn-primary" id="file" name="form_file" accept="image/jpeg"/>
-                <button class="btn btn-primary">Upload</button>
+                <input type="file" id="file" name="form_file" accept="image/jpeg"/>
+                <button class="btn btn-primary btn-sm">Upload</button>
                 </form>
             </fieldset>
             <br />
@@ -221,7 +221,7 @@ def image():
 
         # check if metadata is not equal to 'N/A'
         if file_name != 'N/A':
-            image_html += f"<li><a href=\"/files/{file_name}\" target=\"_blank\">{file_name}</a><form action=\"/delete\" method=\"post\"><input type=\"hidden\" name=\"image_id\" value=\"{file_name}\"><button type=\"submit\" class=\"btn btn-danger\">Delete</button></form><br>"
+            image_html += f"<li><form action=\"/delete\" method=\"post\"><input type=\"hidden\" name=\"image_id\" value=\"{file_name}\"><a href=\"/files/{file_name}\" target=\"_blank\">{file_name}</a><button type=\"submit\" class=\"btn btn-danger btn-sm\">Delete</button></form><br>"
 
         # add file size if it is not equal to 'N/A'
         if file_size != 'N/A':
@@ -318,19 +318,25 @@ def get_file(filename):
 def delete_image(filename):
   # Get the user_id from the session
   user_id = session.get('user_id')
+
   # set the blob name to the filename with the extension
   blob_name = f"{filename}.jpg"  
-  # Call the delete_file function to delete the file
-  status_code = storage.delete_file(user_id, blob_name)
 
-  # Check the result and status code returned by the function
-  if status_code == 200:
-    # Redirect to the image gallery page after deletion
-    return redirect('/image')
-  elif status_code == 404:
-    return {'message': 'File not found'}, 404
-  else:
-    return {'error': 'An error occurred while deleting the file'}, 500
+  # Call the delete_file function to delete the file
+  image_data = storage.delete_file(user_id, blob_name)
+
+  # Return a response with the file data and MIME type
+  return Response(image_data, mimetype='image/jpeg')
+  
+
+  # # Check the result and status code returned by the function
+  # if status_code == 200:
+  #   # Redirect to the image gallery page after deletion
+  #   return redirect('/image')
+  # elif status_code == 404:
+  #   return {'message': 'File not found'}, 404
+  # else:
+  #   return {'error': 'An error occurred while deleting the file'}, 500
     
 
 # @app.route("/")

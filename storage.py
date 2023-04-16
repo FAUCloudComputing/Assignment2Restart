@@ -80,10 +80,13 @@ def delete_file(user_id, blob_name):
     # Check if the blob exists
     if blob.exists():
         # Delete the blob
-        blob.delete()
+        image_data = blob.delete()
+        
+    return image_data
+        
 
-        # Return a success message or status code, if desired
-        return "File deleted successfully", 200
-    else:
-        # Return an error message or status code, if desired
-        return "File not found", 404
+    #     # Return a success message or status code, if desired
+    #     return "File deleted successfully", 200
+    # else:
+    #     # Return an error message or status code, if desired
+    #     return "File not found", 404
