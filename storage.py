@@ -6,36 +6,45 @@ from typing import Dict
 from google.oauth2.credentials import Credentials
 from middleware import logger
 
+from google.auth import exceptions
+from google.auth import default
+from google.auth.credentials import Credentials
 
-# Read the JSON string from the environment variable
-secret_json = os.environ.get('APP_CREDENTIALS_SECRET')
+try:
+    # Try to get the default credentials
+    credentials, _ = default()
+except exceptions.DefaultCredentialsError as e:
+    print("Failed to get default credentials:", e)
+    
+# # Read the JSON string from the environment variable
+# secret_json = os.environ.get('APP_CREDENTIALS_SECRET')
 
-# Parse the JSON string into a dictionary
-secret_data = json.loads(secret_json)
-type = secret_data["type"],
-project_id = secret_data["project_id"],
-private_key_id = secret_data["private_key_id"],
-private_key = ["private_key"],
-client_email = secret_data["client_email"],
-client_id = secret_data["client_id"],
-auth_uri = secret_data["auth_uri"],
-token_uri = secret_data["token_uri"],
-auth_provider_x509_cert_url = secret_data["auth_provider_x509_cert_url"],
-client_x509_cert_url = secret_data["client_x509_cert_url"],
+# # Parse the JSON string into a dictionary
+# secret_data = json.loads(secret_json)
+# type = secret_data["type"],
+# project_id = secret_data["project_id"],
+# private_key_id = secret_data["private_key_id"],
+# private_key = ["private_key"],
+# client_email = secret_data["client_email"],
+# client_id = secret_data["client_id"],
+# auth_uri = secret_data["auth_uri"],
+# token_uri = secret_data["token_uri"],
+# auth_provider_x509_cert_url = secret_data["auth_provider_x509_cert_url"],
+# client_x509_cert_url = secret_data["client_x509_cert_url"],
 
-# Create a Credentials object using the extracted information
-credentials = Credentials.from_authorized_user_info(info={
-    "type": type,
-    "project_id": project_id,
-    "private_key_id": private_key_id,
-    "private_key": private_key,
-    "client_id": client_id, 
-    "client_email": client_email,
-    "auth_uri": auth_uri,
-    "token_uri": token_uri,
-    "auth_provider_x509_cert_url": auth_provider_x509_cert_url,
-    "client_x509_cert_url": client_x509_cert_url,
-})
+# # Create a Credentials object using the extracted information
+# credentials = Credentials.from_authorized_user_info(info={
+#     "type": type,
+#     "project_id": project_id,
+#     "private_key_id": private_key_id,
+#     "private_key": private_key,
+#     "client_id": client_id, 
+#     "client_email": client_email,
+#     "auth_uri": auth_uri,
+#     "token_uri": token_uri,
+#     "auth_provider_x509_cert_url": auth_provider_x509_cert_url,
+#     "client_x509_cert_url": client_x509_cert_url,
+# })
 
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials.to_json()
