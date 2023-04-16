@@ -47,7 +47,7 @@ except exceptions.DefaultCredentialsError as e:
 # })
 
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = './keyfile.json'
 
 
 datastore_client = datastore.Client()
