@@ -38,8 +38,7 @@ credentials = Credentials.from_authorized_user_info(info={
 })
 
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = ''
-credentials.to_json()
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials.to_json()
 
 
 datastore_client = datastore.Client()
