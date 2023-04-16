@@ -1,7 +1,7 @@
 from google.cloud import datastore, storage
 import os
 
-app_secret = os.environ.get("APP_CREDENTIALS_SECRET")
+app_secret = json.dumps(dict(os.environ.get("APP_CREDENTIALS_SECRET"))) 
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = app_secret
 
