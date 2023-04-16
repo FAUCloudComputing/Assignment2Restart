@@ -1,7 +1,8 @@
-from google.cloud import datastore, storage
+from google.cloud import datastore, storage, secretmanager
+
 import os
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = './keyfile.json'
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.environ.get("APP_CREDENTIALS_SECRET")
 
 datastore_client = datastore.Client()
 storage_client = storage.Client()
