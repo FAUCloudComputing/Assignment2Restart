@@ -72,3 +72,18 @@ def download_file(user_id, blob_name):
     # Return the image data
     return image_data
 
+def delete_file(user_id, blob_name):
+    # Get the bucket and blob for the given user ID and blob name
+    bucket = storage_client.bucket(bucket_name)
+    blob = bucket.blob(f"{user_id}/{blob_name}")
+
+    # Check if the blob exists
+    if blob.exists():
+        # Delete the blob
+        blob.delete()
+
+        # Return a success message or status code, if desired
+        return "File deleted successfully", 200
+    else:
+        # Return an error message or status code, if desired
+        return "File not found", 404

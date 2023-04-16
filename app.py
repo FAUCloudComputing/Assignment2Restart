@@ -321,13 +321,25 @@ def get_file(filename):
 
 
 @app.route('/delete', methods=['POST'])
-def delete_image():
+def delete_image(filename):
+  # Get the user_id from the session
+    user_id = session.get('user_id')
     image_id = request.form.get('image_id')
     # Use the image_id to delete the image from storage or database
     # Your deletion logic here
+    # Call the delete_file function to delete the file
+    result, status_code = delete_file(user_id, f"{filename}.jpg")
 
-    # Redirect to the image gallery page after deletion
-    return redirect('/image')
+    # Check the result and status code returned by the function
+    if status_code == 200:
+    #  return {'message': 'File deleted successfully'}, 200
+      # Redirect to the image gallery page after deletion
+      return redirect('/image')
+    elif status_code == 404:
+      return {'message': 'File not found'}, 404
+    else:
+      return {'error': 'An error occurred while deleting the file'}, 500
+    
 
 # @app.route("/")
 # def hello() -> str:
