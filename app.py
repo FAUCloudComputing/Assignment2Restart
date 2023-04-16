@@ -221,7 +221,15 @@ def image():
 
         # check if metadata is not equal to 'N/A'
         if file_name != 'N/A':
-            image_html += f"<li><form action=\"/delete\" method=\"post\"><input type=\"hidden\" name=\"image_id\" value=\"{file_name}\"><a href=\"/files/{file_name}\" target=\"_blank\">{file_name}</a><button type=\"submit\" class=\"btn btn-danger btn-sm\">Delete</button></form><br>"
+            image_html += """
+              <li>
+                <form action="/delete" method="post">
+                  <input type="hidden" name="form_file2" value="{file_name}">
+                  <a href="/files/{file_name}" target="_blank">{file_name}</a>
+                  <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+                <br>
+            """
 
         # add file size if it is not equal to 'N/A'
         if file_size != 'N/A':
@@ -315,18 +323,23 @@ def get_file(filename):
 
 
 @app.route('/delete', methods=['POST'])
-def delete_image(filename):
+def delete_image():
+  # Get the file from the request
+  file = request.files['form_file2']
+  
   # Get the user_id from the session
   user_id = session.get('user_id')
+  
+  filename = file.filename.split('.')[0]
 
   # set the blob name to the filename with the extension
   blob_name = f"{filename}.jpg"  
 
   # Call the delete_file function to delete the file
-  image_data = storage.delete_file(user_id, blob_name)
+  storage.delete_file(user_id, blob_name)
 
-  # Return a response with the file data and MIME type
-  return Response(image_data, mimetype='image/jpeg')
+  # Redirect to the previous page
+  return redirect(request.referrer)
   
 
   # # Check the result and status code returned by the function
