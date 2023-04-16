@@ -224,7 +224,7 @@ def image():
             image_html += """<li>
               <a href=\"/files/{file_name}\" target=\"_blank\">{file_name}</a>
               <form action="/delete" method="post">
-                <input type="hidden" name="image_id" value="{{ image.id }}">
+                <input type="hidden" name="image_id" value="{file_name}">
                 <button type="submit" class="btn btn-danger">Delete</button>
               </form>
             <br>"""
@@ -328,7 +328,7 @@ def delete_image(filename):
     # Use the image_id to delete the image from storage or database
     # Your deletion logic here
     # Call the delete_file function to delete the file
-    result, status_code = delete_file(user_id, f"{filename}.jpg")
+    result, status_code = storage.delete_file(user_id, f"{filename}.jpg")
 
     # Check the result and status code returned by the function
     if status_code == 200:
