@@ -1,25 +1,8 @@
 from google.cloud import datastore, storage, secretmanager
-from google.oath2.credentials import Credentials
+
 import os
 
-# Create a Secret Manager client
-secret_manager_client = secretmanager.SecretManagerServiceClient()
-
-# Define the name of the secret containing the credentials
-secret_name = "keyfile_json"  # Replace with the name of your secret
-
-# Retrieve the secret containing the credentials
-secret = secret_manager_client.secret_version_path(vernal-landing-376714, secret_name, "latest")
-response = secret_manager_client.access_secret_version(secret)
-
-# Extract the credentials from the secret payload
-credentials = Credentials.from_authorized_user_info(info=response.payload.data)
-
-# Use the credentials to interact with Google Cloud Storage
-# You can use the `credentials` object in place of the JSON file credentials
-
-
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.environ.get("APP_CREDENTIALS_SECRET")
 
 datastore_client = datastore.Client()
 storage_client = storage.Client()
