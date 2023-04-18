@@ -28,6 +28,7 @@ from utils.logging import logger
 app = Flask(__name__)
 app.secret_key = '47238947238439279382479'
 
+
 def access_secret_version(secret_version_id):
     """Return the value of a secret's version"""
     from google.cloud import secretmanager
@@ -40,6 +41,7 @@ def access_secret_version(secret_version_id):
 
     # Return the decoded payload.
     return response.payload.data.decode('UTF-8')
+
 
 @app.route('/')
 def index():
@@ -315,33 +317,21 @@ def get_file(filename):
 
 @app.route('/delete', methods=['POST'])
 def delete_image():
-  # Get the file from the request
-  file = request.files['form_file2']
-  
-  # Get the user_id from the session
-  user_id = session.get('user_id')
-  
-  filename = file.filename.split('.')[0]
+    # Get the file name from the form
+    file_name = request.form['form_file2']
 
-  # set the blob name to the filename with the extension
-  blob_name = f"{filename}.jpg"  
+    # Get the user_id from the session
+    user_id = session.get('user_id')
 
-  # Call the delete_file function to delete the file
-  storage.delete_file(user_id, blob_name)
+    # Call the delete_datastore_entry function to delete the file information from datastore
+    storage.delete_datastore_entry(user_id, file_name)
 
-  # Redirect to the previous page
-  return redirect(request.referrer)
-  
+    # Call the delete_file function to delete the file from storage
+    storage.delete_file_storage(user_id, file_name)
 
-  # # Check the result and status code returned by the function
-  # if status_code == 200:
-  #   # Redirect to the image gallery page after deletion
-  #   return redirect('/image')
-  # elif status_code == 404:
-  #   return {'message': 'File not found'}, 404
-  # else:
-  #   return {'error': 'An error occurred while deleting the file'}, 500
-    
+    # Redirect to the previous page
+    return redirect(request.referrer)
+
 
 # @app.route("/")
 # def hello() -> str:

@@ -15,7 +15,7 @@ try:
     credentials, _ = default()
 except exceptions.DefaultCredentialsError as e:
     print("Failed to get default credentials:", e)
-    
+
 # # Read the JSON string from the environment variable
 # secret_json = os.environ.get('APP_CREDENTIALS_SECRET')
 
@@ -48,7 +48,6 @@ except exceptions.DefaultCredentialsError as e:
 
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = './keyfile.json'
-
 
 datastore_client = datastore.Client()
 storage_client = storage.Client()
@@ -119,21 +118,33 @@ def download_file(user_id, blob_name):
     # Return the image data
     return image_data
 
-def delete_file(user_id, blob_name):
+
+def delete_datastore_entry(user_id, image_name):
+    # Create a query to find the entity with the specified image_name and user_id
+    query = datastore_client.query(kind='images')
+    query.add_filter('Owner', '=', user_id)
+    query.add_filter('Name', '=', image_name)
+
+    # Execute the query and get the results
+    results = list(query.fetch())
+
+    # Check if there's a result
+    if len(results) > 0:
+        # Get the first result (there should only be one)
+        entity = results[0]
+
+        # Delete the entity from Datastore
+        datastore_client.delete(entity.key)
+
+
+def delete_file_storage(user_id, file_name):
     # Get the bucket and blob for the given user ID and blob name
     bucket = storage_client.bucket(bucket_name)
-    blob = bucket.blob(f"{user_id}/{blob_name}")
+    blob = bucket.blob(f"{user_id}/{file_name}.jpg")
+    print(f"{user_id}/{file_name}")
 
-    # Check if the blob exists
+    # If exists, deletes the file from the storage
     if blob.exists():
-        # Delete the blob
-        image_data = blob.delete()
-        
-    return image_data
-        
+        blob.delete()
 
-    #     # Return a success message or status code, if desired
-    #     return "File deleted successfully", 200
-    # else:
-    #     # Return an error message or status code, if desired
-    #     return "File not found", 404
+    return
